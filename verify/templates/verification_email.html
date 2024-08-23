@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #FF7F7F; /* NightLab의 메인 색상 */
+            font-size: 26px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 10px 0;
+            align-items: center;
+
+        }
+        .code {
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px;
+            background: #FF7F7F;
+            color: #fff;
+            border-radius: 6px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>안녕하세요,{{nickname}}님</h1>
+        <p>귀하의 인증 코드가 요청되었습니다.</p>
+        <p>인증 코드는 다음과 같습니다:</p>
+        <p class="code">{{ verification_code }}</p>
+        <p>위 코드를 입력하여 인증을 완료해 주세요.</p>
+        <p class="footer">감사합니다!<br>Sinchonthon 2팀</p>
+    </div>
+</body>
+</html>
