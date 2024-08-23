@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import Post
+from community.models import Like
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['id', 'category', 'detail', 'title', 'text', 'limit', 'link', 'deadline', 'image', 'date']
+        fields = ['id', 'category', 'detail', 'title', 'text', 'limit', 'link', 'deadline', 'image', 'date', 'likes_count']
 
     def validate(self, data):
         category = data.get('category')
@@ -17,3 +18,8 @@ class PostSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("나눔 카테고리에서는 생활용품, 음식, 가구만 선택할 수 있습니다.")
         
         return data
+    
+    likes_count = serializers.SerializerMethodField()
+
+    def get_likes_count(self, obj):
+        return Like.objects.filter(post=obj).count()
