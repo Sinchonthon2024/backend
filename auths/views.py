@@ -14,7 +14,7 @@ from rest_framework.serializers import Serializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from auths.models import MutsaUser
-from .serializers import UserLoginRequestSerializer, UserTokenReissueSerializer
+from .serializers import UserLoginRequestSerializer, UserTokenReissueSerializer, UserResponseSerializer
 from django.core.mail import EmailMessage
 from django.utils.crypto import get_random_string
 
@@ -86,3 +86,23 @@ def token_reissue(request):
     return Response({
         'access_token': str(new_access_token)
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def user_signup(request):
+    match request.method:
+        case 'POST':
+            serializer = UserResponseSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            user = request.user
+            user.user_name = serializer.validated_data.get('user_name')
+            user.home = serializer.validated_data.get('home')
+            user.school = serializer.validated_data.get('school')
+            user.region_1depth_name = serializer.validated_data.get('region_1depth_name')
+            user.region_2depth_name = serializer.validated_data.get('region_2depth_name')
+
+            user.save()
+            return Response({"detail": "가입에 성공하였습니다."}, status=status.HTTP_200_OK)

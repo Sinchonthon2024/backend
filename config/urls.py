@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from auths.views import login
+from auths.views import login, user_signup, token_reissue
 from verify.views import SendVerification, CheckVerifycode
 
 urlpatterns = [
@@ -26,11 +26,15 @@ urlpatterns = [
 
     #auth
     path("api/auth/login", login),
+    path("api/auth/token_reissue", token_reissue),
     path('', include('community.urls') ),
 
     #verify
     path("api/auth/verify", SendVerification),
     path("api/verify/check", CheckVerifycode),
+    path("api/auth/signup", user_signup),
+
+
 
 
 ]
