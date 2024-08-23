@@ -25,4 +25,5 @@ urlpatterns = [
 
     #auth
     path("api/auth/login", login),
+    path('', include('community.urls') ),
 ]
