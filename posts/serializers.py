@@ -3,9 +3,11 @@ from .models import Post
 from community.models import Like
 
 class PostSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='writer.user_name', read_only=True)
+
     class Meta:
         model = Post
-        fields = ['id', 'category', 'detail', 'title', 'text', 'limit', 'link', 'deadline', 'image', 'date', 'likes_count']
+        fields = ['user_name', 'id', 'category', 'detail', 'title', 'text', 'limit', 'link', 'deadline', 'image', 'date', 'likes_count']
 
     def validate(self, data):
         category = data.get('category')
@@ -23,3 +25,22 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_likes_count(self, obj):
         return Like.objects.filter(post=obj).count()
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response = {
+            "user_name": instance.writer.user_name,
+            "id": instance.id,
+            "date": instance.date,
+            "post": {
+                "category": instance.category,
+                "detail": instance.detail,
+                "title": instance.title,
+                "text": instance.text,
+                "limit": instance.limit,
+                "link": instance.link,
+                "deadline": instance.deadline,
+                "image": instance.image.url if instance.image else None,
+            }
+        }
+        return response
