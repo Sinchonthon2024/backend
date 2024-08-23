@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from auths.views import login
+from verify.views import SendVerification, CheckVerifycode
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,10 @@ urlpatterns = [
 
     #auth
     path("api/auth/login", login),
+
+    #verify
+    path("api/auth/verify", SendVerification),
+    path("api/verify/check", CheckVerifycode),
+
+
 ]
