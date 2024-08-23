@@ -4,7 +4,7 @@ from .models import Post
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['id', 'category', 'detail', 'title', 'text', 'link', 'deadline', 'image', 'date']
+        fields = ['id', 'category', 'detail', 'title', 'text', 'limit', 'link', 'deadline', 'image', 'date']
 
     def validate(self, data):
         category = data.get('category')

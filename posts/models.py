@@ -24,6 +24,7 @@ class Post(models.Model):
     detail = models.CharField(max_length=10, choices=SOCIAL_DETAIL_CHOICES + SHARE_DETAIL_CHOICES)
     title = models.CharField(max_length=100)
     text = models.TextField()
+    limit = models.IntegerField()
     link = models.CharField(max_length=255, blank=True, null=True) 
     deadline = models.DateTimeField()
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
