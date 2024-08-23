@@ -30,6 +30,34 @@ def get_jwks_url():
     config = response.json()
     return config["jwks_uri"]
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login(request):
+    serializer = UserLoginRequestSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    data = serializer.validated_data  # 검증이 된 값을 가져옴
+
+    google_nickname = data['name']
+
+
+    try:
+        user = MutsaUser.objects.get(nickname=google_nickname)  # 데이터베이스에서 해당 닉네임을 가진 유저 조회
+    except MutsaUser.DoesNotExist:  # 존재하지 않으면 새로운 유저 생성
+        user = MutsaUser.objects.create_user(nickname=google_nickname)
+
+    refresh = RefreshToken.for_user(user)  # 리프레쉬 토큰 생성
+    data = MutsaUser.objects.get(nickname=google_nickname)  # 데이터베이스에서 유저 조회
+    data.login = True
+    data.refresh_token = refresh  # refresh_token 저장
+    data.save()
+
+    return Response({
+        'access_token': str(refresh.access_token),  # access token 반환
+        'refresh_token': str(refresh)  # refresh token 반환
+    }, status=status.HTTP_200_OK)
 
 
 # Refresh 토큰으로 Access 토큰 재발급하는 API
