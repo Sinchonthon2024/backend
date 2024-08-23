@@ -1,4 +1,5 @@
 from django.db import models
+from auths.models import MutsaUser
 
 class Post(models.Model):
     CATEGORY_CHOICES = [
@@ -19,7 +20,7 @@ class Post(models.Model):
         ('음식', '음식'),
         ('가구', '가구'),
     ]
-    
+    writer = models.ForeignKey(MutsaUser, on_delete=models.CASCADE)
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
     detail = models.CharField(max_length=10, choices=SOCIAL_DETAIL_CHOICES + SHARE_DETAIL_CHOICES)
     title = models.CharField(max_length=100)
