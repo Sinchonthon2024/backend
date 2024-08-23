@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'auths',
     'users',
     'verify',
+    'posts',
 
 
 ]
